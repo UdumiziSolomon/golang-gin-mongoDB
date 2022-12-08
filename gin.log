@@ -1,0 +1,9 @@
+[GIN-debug] GET    /app                      --> main.main.func1 (4 handlers)
+[GIN-debug] POST   /api/user/register        --> github.com/UdumiziSolomon/Gopher-Backend/controllers.CreateUser.func1 (4 handlers)
+[GIN-debug] GET    /api/user/account/:id     --> github.com/UdumiziSolomon/Gopher-Backend/controllers.GetUserByID.func1 (4 handlers)
+[GIN-debug] GET    /api/user/accounts        --> github.com/UdumiziSolomon/Gopher-Backend/controllers.GetAllUsers.func1 (4 handlers)
+[GIN-debug] DELETE /api/user/account/delete/:id --> github.com/UdumiziSolomon/Gopher-Backend/controllers.DeleteUserByID.func1 (4 handlers)
+[GIN-debug] PUT    /api/user/account/update/:id --> github.com/UdumiziSolomon/Gopher-Backend/controllers.UpdateUserByID.func1 (4 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on localhost:6000

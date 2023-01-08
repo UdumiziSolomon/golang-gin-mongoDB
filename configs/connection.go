@@ -18,21 +18,17 @@ func ConnectDB() *mongo.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	
 	// timeout configuration
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-		err = client.Connect(ctx)
-
-		if err != nil {
+		if err = client.Connect(ctx); err != nil {
 			log.Fatal(err)
 		}
-
+		
 		// defer client.Disconnect(ctx)
 		
 		// ping the database
-		err = client.Ping(ctx, readpref.Primary())
-
-		if err != nil {
+		if err = client.Ping(ctx, readpref.Primary()); err != nil {
 			log.Fatal(err)
 		}
 
@@ -51,7 +47,7 @@ func ConnectDB() *mongo.Client {
 		
 }
 
-var DB *mongo.Client =  ConnectDB()
+var DB *mongo.Client = ConnectDB()
 
 // get all database collection
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {

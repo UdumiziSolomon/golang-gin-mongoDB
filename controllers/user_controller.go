@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"net/http"
+	// "net/smtp"
 	// "context"
 	// "time"
+	// "fmt"
 	"github.com/UdumiziSolomon/Gopher-Backend/models"
 	"github.com/UdumiziSolomon/Gopher-Backend/configs"
 	
@@ -29,19 +31,53 @@ func CreateUser() gin.HandlerFunc {
 		// create new user
 		newUser := models.User{
 			Id: 	      primitive.NewObjectID(),
+			Email: 	 	  user.Email,
 			Name:   	  user.Name,
 			Age:     	  user.Age,
 			Gender: 	  user.Gender,
 			Hobbies:      user.Hobbies,
 		}
 
-		result, err := userCollection.InsertOne(nil, newUser)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, err.Error())
-			return
-		}
+		check := userCollection.FindOne(nil, bson.M{ "name": newUser.Name }).Decode(&user)
 
-		c.JSON(http.StatusCreated, result)
+		if check != nil {
+
+			// SENDER DETAILS
+			// email_from := configs.LoadENV("EMAILFROM")
+			// email_password := configs.LoadENV("EMAILPASSWORD")
+
+			// // Receiver email address
+			// email_reciever := []string{ user.Email }
+
+			// // SMTP SERVER CONFIGURATION
+			// smtpHost := "smtp.gmail.com"
+			// smtpPort := "587"
+
+			// // Message
+			// email_message := []byte("verification mail")
+
+			// // Authentication
+			// email_auth := smtp.PlainAuth("", email_from, email_password, smtpPort)
+
+			// // Send mail 
+			// err := smtp.SendMail(smtpHost+":" + smtpPort, email_auth, email_from, email_reciever, email_message)
+			// if err != nil {
+			// 	c.JSON(http.StatusInternalServerError, err.Error())
+			// 	return
+			// }
+
+			// insert
+			result, err := userCollection.InsertOne(nil, newUser)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, err.Error())
+				return
+			}
+
+			c.JSON(http.StatusCreated, result)
+		}else{
+			c.String(http.StatusBadRequest,"%s exists in DB", newUser.Name)
+		}
+	
 	}
 }
 
@@ -125,6 +161,7 @@ func UpdateUserByID() gin.HandlerFunc {
 		// new data
 		dataUpdates := bson.M{
 			"name":       user.Name,
+			"email":	  user.Email,
 			"age": 	      user.Age,
 			"gender":     user.Gender,
 			"hobbies":    user.Hobbies,
